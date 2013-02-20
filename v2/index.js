@@ -14,7 +14,7 @@ var server = http.createServer(function(req, res) {
       //if(url == "/") url = "index.html";
       //serveFile(res, url);
       if(url == "/") {
-        url = "/index-test.jade";
+        url = "/index.jade";
       }
       if(url.match(/^\/public\//)) {
         serveFile(res, url);
@@ -54,13 +54,9 @@ function serveJade(res, fileName) {
           serve404(res);
         } else {
           console.log("Yes....");
-          res.writeHeader(200, {"content-type": "text/html"}); //mime.lookup(path.basename(fileName))});
-          //console.log("and.." + data);
-          var fn = jade.compile(data);
-          //console.log(util.inspect(fn));
+          res.writeHeader(200, {"content-type": "text/html"});
+          var fn = jade.compile(data, {layout:"layout.jade"});
           var result = fn({});
-          //console.log(util.inspect(result));
-          //console.log(result);
           res.end(result);
         }
       });
