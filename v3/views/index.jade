@@ -1,0 +1,89 @@
+extends testfolder/layout2
+block content
+
+  - function option(text, value, isEqualTo){return "<option " + (value == isEqualTo ? "selected='selected' " : "") + "value='" + value + "'>" + text + "</option>";}
+  
+  h1 Enter a fish
+  #content
+    form(method="post")
+      table
+        tr
+          td: label(for="fish-type") Fish
+          td: select#fish-type(name="fish-type")
+            !=option("Gudgeon", "gudgeon", currentFish.name)
+            !=option("Perch", "perch", currentFish.name)
+            !=option("Tench", "tench", currentFish.name)
+            !=option("Pike", "pike", currentFish.name)
+            !=option("Carp", "carp", currentFish.name)
+            !=option("Roach", "roach", currentFish.name)
+            !=option("Bream", "bream", currentFish.name)
+        tr
+          td Weight
+          td
+            select#fish-weight-lbs.default-width(name="fish-weight-lbs")
+              !=option("1", "1", currentFish.weight.lbs)
+              !=option("2", "2", currentFish.weight.lbs)
+              !=option("3", "3", currentFish.weight.lbs)
+              !=option("4", "4", currentFish.weight.lbs)
+              !=option("5", "5", currentFish.weight.lbs)
+              !=option("6", "6", currentFish.weight.lbs)
+              !=option("7", "7", currentFish.weight.lbs)
+              !=option("8", "8", currentFish.weight.lbs)
+              !=option("9", "9", currentFish.weight.lbs)
+              !=option("10", "10", currentFish.weight.lbs)
+              !=option("11", "11", currentFish.weight.lbs)
+              !=option("12", "12", currentFish.weight.lbs)
+              !=option("13", "13", currentFish.weight.lbs)
+              !=option("14", "14", currentFish.weight.lbs)
+              !=option("15", "15", currentFish.weight.lbs)
+              !=option("16", "16", currentFish.weight.lbs)
+            span &#160;lbs&#160;
+            select#fish-weight-oz(name="fish-weight-oz").default-width
+              !=option("1", "1", currentFish.weight.oz)
+              !=option("2", "2", currentFish.weight.oz)
+              !=option("3", "3", currentFish.weight.oz)
+              !=option("4", "4", currentFish.weight.oz)
+              !=option("5", "5", currentFish.weight.oz)
+              !=option("6", "6", currentFish.weight.oz)
+              !=option("7", "7", currentFish.weight.oz)
+              !=option("8", "8", currentFish.weight.oz)
+              !=option("9", "9", currentFish.weight.oz)
+              !=option("10", "10", currentFish.weight.oz)
+              !=option("11", "11", currentFish.weight.oz)
+              !=option("12", "12", currentFish.weight.oz)
+              !=option("13", "13", currentFish.weight.oz)
+              !=option("14", "14", currentFish.weight.oz)
+              !=option("15", "15", currentFish.weight.oz)
+              !=option("16", "16", currentFish.weight.oz)
+            span &#160;oz
+        tr
+          td: td
+        tr
+          td: td: input(type="submit", value="Log this fish")
+    #fishlog
+      table.table.table-striped.table-bordered.table-condensed
+        thead
+          th Fish
+          th Weight
+        tbody
+          each fish in fishlog
+            include fish
+  #sidebar
+    #todo
+      p: strong Version 3
+      ul(style="list-style:none;")
+        li
+          i.icon-ok
+          &#160;Use a jade layout template
+        li
+          i.icon-ok
+          &#160;Display a table of fish logs using a Jade template (use dummy data passed into the template)
+        li
+          i.icon-ok
+          &#160;Submitting the form will redraw the screen with the form still populated
+        li
+          i.icon-ok
+          &#160;Perform a <a href="http://en.wikipedia.org/wiki/Post/Redirect/Get">post/redirect/get</a> on form submission
+        li
+          i.icon-ok
+          &#160;Add new fish to the fish log and display them on form submission
