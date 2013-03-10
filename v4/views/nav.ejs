@@ -1,0 +1,18 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a href="/" class="brand">Fisherman's Log</a>
+      <div class="nav-collapse collapse">
+        <p class="navbar-text pull-right">
+          {{if(session.userId) { }}
+          Logged in as {{=session.user.name}} - 
+          <a href="/logout" class="navbar-link">Logout</a>
+          {{ } else { }}
+          <a href="/login">Login</a>
+          {{ } }}
+        </p>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

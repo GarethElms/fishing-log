@@ -1,0 +1,9 @@
+{{ layout("../layout") }}
+
+
+{{if(!session.userId) { }}
+<p>To use Fisherman's Log you need to <a href="/login">login</a></p>      
+{{ } else { }}
+{{-partial("../fish/fishLog") }}
+{{ } }}
+

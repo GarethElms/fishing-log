@@ -2,9 +2,13 @@ var http = require("http");
 var util = require("util");
 var path = require("path");
 var mime = require("mime");
+var ejs = require("ejs");
 var fs = require("fs");
-var _formidable = require("formidable");
-var jade = require("jade");
+var express = require("express");
+var controllers = {};
+controllers.main = require("./controllers/main");
+controllers.fish = require("./controllers/fish");
+controllers.user = require("./controllers/user");
 
 var _fishLog = {
   fishlog: [
@@ -15,97 +19,44 @@ var _fishLog = {
     {name:"Rudd", weight:{lbs:3, oz:9}},
   ]
 };
-
 var _session = {currentFish:{name:"", weight:{lbs:0, oz:0}}}; // This will do for now
 
-var server = http.createServer(function(req, res) {
-  console.log(req.url);
-  switch(req.method) {
-    case "GET" : {
-      var url = req.url;
-      //if(url == "/") url = "index.html";
-      //serveFile(res, url);
-      if(url == "/") {
-        url = "/index.jade";
-      }
-      if(url.match(/^\/public\//)) {
-        serveFile(res, url);
-      } else {
-        serveJade(res, url);
-      }
-      break;
-    }
-    case "POST" : {
-      var form = new _formidable.IncomingForm();
-      form.parse(req, function(err, fields, files) {
-        var currentFish = {name:fields["fish-type"], weight:{lbs:fields["fish-weight-lbs"], oz:fields["fish-weight-oz"]}};
-        _session.currentFish = currentFish;
-        _fishLog.fishlog.push(currentFish);
-        serveRedirect(res, "/");
-      });
-      break;
-    }
-  };
+ejs.open = '{{';
+ejs.close = '}}';
+console.log(util.inspect(ejs));
+var app = express();
+
+// Setup the middleware
+app.configure(function(){
+  app.set('port', process.env.PORT || 3000);
   
-}).listen(3000);
+  app.use(express.favicon());
+  app.use("/public", express.static(path.join(__dirname, 'public')));
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(express.cookieParser('your secret here'));
+  app.use(express.session());
+  app.use(require("./lib/middleware/init-request"));
+  app.use(require("./lib/middleware/logged-in-user"));
+  app.use(require("./lib/middleware/view-helpers"));
+  app.use(app.router);
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'ejs');
+  app.engine('ejs', require('ejs-locals'));
+});
 
-function serve404(res) {
-  res.writeHead(404, {"content-type": "text/plain"});
-  res.end("Error : Resource not found");
-}
+app.get("/", controllers.main.index);
+app.get("/fish", controllers.fish.list);
 
-function serveRedirect(res, url) {
-  res.writeHead(302, {"location":url});
-  res.end("Redirecting to <a href='" + url + "'>here</a>");
-}
+app.get("/login", controllers.user.login);
+app.post("/login", controllers.user.login_post);
+app.get("/logout", controllers.user.logout);
+app.get("/register", controllers.user.register);
 
-function serveJade(res, fileName) {
-  fileName = __dirname + "/views" + fileName
-  if(!fileName.match(/.jade$/)) {
-    fileName += ".jade";
-  }
-  fs.exists(fileName, function(exists) {
-    console.log("jade: Does " + fileName + " exist?");
-    if(exists) {
-      fs.readFile(fileName, function(err, data) {
-        if(err) {
-          console.log("Nope.");
-          serve404(res);
-        } else {
-          console.log("Yes....");
-          res.writeHeader(200, {"content-type": "text/html"}); //mime.lookup(path.basename(fileName))});
-          var fn = jade.compile(data, {filename:fileName, pretty:true});
-          var result = fn({fishlog:_fishLog.fishlog, currentFish:_session.currentFish});//{fishlog:_fishLog.fishlog, currentFish:_session.currentFish});
-          res.end(result);
-        }
-      });
-    } else {
-      serve404(res);
-    }
-  });
-}
+app.post("/register", controllers.user.register_post);
 
-function serveFile(res, fileName) {
-  if(fileName.match(/^\/public\//)) {
-    fileName = "." + fileName;
-  } else {
-    fileName = "./public/" + fileName
-  }
-  fs.exists(fileName, function(exists) {
-    console.log("Does " + fileName + " exist?");
-    if(exists) {
-      fs.readFile(fileName, function(err, data) {
-        if(err) {
-          console.log("Nope.");
-          serve404(res);
-        } else {
-          console.log("Yes.");
-          res.writeHeader(200, {"content-type": mime.lookup(path.basename(fileName))});
-          res.end(data);
-        }
-      });
-    } else {
-      serve404(res);
-    }
-  });
-}
+// ###########################
+
+http.createServer(app).listen(app.get('port'), function(){
+  console.log("Express server listening on port " + app.get('port'));
+});

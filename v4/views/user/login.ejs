@@ -1,0 +1,34 @@
+{{setTitle="Login"}}
+{{ layout("../layout") }}
+
+<h2>Login</h2>
+{{-partial("../errors") }}
+<form method="post">
+  <table>
+    <tr>
+      <td><label for="email">Email</label></td>
+      <td><input type="text" name="email" id="email" placeholder="Email address" value="{{=viewModel.email}}" /></td>
+    </tr>
+    <tr>
+      <td><label for="password">Password</label></td>
+      <td><input type="password" name="password" id="password" placeholder="Password" /></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <input type="submit" value="Login" />
+        <a href="/register">Or register</a>
+      </td>
+    </tr>
+  </table>
+</form>
+
+<script>
+$(document).ready( function() {
+  if($("#email").val()) {
+    $("#password").focus();
+  } else {
+    $("#email").focus();
+  }
+});
+</script>

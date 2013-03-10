@@ -1,0 +1,47 @@
+<div id="fishlog">
+  <a href="#addFishModal" data-toggle="modal" style="float:right;">+ Add a fish</a>
+  <table class="table table-striped table-bordered table-condensed">
+    <thead>
+      <th>Fish</th>
+      <th>Weight</th>
+    </thead>
+    <tbody>
+      <!--<tr>
+        <td>Perch</td>
+        <td>4 lbs 14 oz</td>
+      </tr>
+      <tr>
+        <td>Tench</td>
+        <td>8 lbs 3 oz</td>
+      </tr>
+      <tr>
+        <td>Bream</td>
+        <td>12 lbs 1 oz</td>
+      </tr>
+      <tr>
+        <td>Carp</td>
+        <td>27 lbs 7 oz</td>
+      </tr>
+      <tr>
+        <td>Rudd</td>
+        <td>3 lbs 9 oz</td>
+      </tr>
+      -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div id="addFishModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Add a fish</h3>
+  </div>
+  <div class="modal-body">
+    {{-partial("../fish/addFish") }}
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    <button class="btn btn-primary">Add fish</button>
+  </div>
+</div>
