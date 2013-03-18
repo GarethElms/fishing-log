@@ -36,9 +36,9 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
-  app.use(require("./lib/middleware/init-request"));
-  app.use(require("./lib/middleware/logged-in-user"));
-  app.use(require("./lib/middleware/view-helpers"));
+  app.use(require("./middleware/init-request"));
+  app.use(require("./middleware/logged-in-user"));
+  app.use(require("./middleware/view-helpers"));
   app.use(app.router);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
@@ -47,7 +47,8 @@ app.configure(function(){
 
 app.get("/", controllers.main.index);
 app.get("/fish", controllers.fish.list);
-
+app.get("/fish/add", controllers.fish.add);
+app.post("/fish/add", controllers.fish.add_post)
 app.get("/login", controllers.user.login);
 app.post("/login", controllers.user.login_post);
 app.get("/logout", controllers.user.logout);

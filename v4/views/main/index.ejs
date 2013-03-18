@@ -1,8 +1,8 @@
 {{ layout("../layout") }}
 
-
 {{if(!session.userId) { }}
-<p>To use Fisherman's Log you need to <a href="/login">login</a></p>      
+<p>Hello. To use Fisherman's Log you need to login :</p>
+{{-partial("../user/login", {viewModel:{email:""} }) }}
 {{ } else { }}
 {{-partial("../fish/fishLog") }}
 {{ } }}

@@ -1,4 +1,4 @@
-var User = require("../lib/models/User");
+var User = require("../models/User");
 var util = require("util");
 
 function initViewModel_login(res, email) {
