@@ -1,4 +1,4 @@
-<form method="post" action="/fish/add">
+<form method="post" action="/fish/add" id="form-fish-add">
 <div id="addFishModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:auto;">
   <div class="modal-body">
       <table>
@@ -45,14 +45,20 @@
 
 <script>
 $(document).ready(function() {
-  $("btn-add-fish").click(function(event) {
+  $("#form-fish-add").submit(function() {
     $.ajax({
       type: "POST",
       url: "/fish/add",
-      data: {name:"John", location:"Boston"}
+      data: $(this).serialize(),
     }).success(function(data, status, x) {
-      //
+      alert("OK: " + data);
+    }).error(function(data, status, x) {
+      alert("ERROR: " + data);
     });
+    return false;
+  });
+  $("").click(function(event) {
+    
   });
 });
 </script>

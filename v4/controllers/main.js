@@ -1,6 +1,15 @@
-//var ejs = require("ejs");
+var CaughtFish = require("../Models/CaughtFish");
 
 exports.index = function(req, res) {
-  res.render("main/index", {});
-  //res.send("test"); // WORKS
+  CaughtFish.getListOfUsersFish(req.session.userId, function(err, fishes) {
+    if(err) {
+      res.locals.error = err;
+    }
+    var fishesArray = [];
+    for(var fish in fishes) {
+      fishesArray.push(JSON.parse(fishes[fish]));
+    }
+    res.locals.viewModel = {fishes:fishesArray};
+    res.render("main/index", {});
+  });
 };

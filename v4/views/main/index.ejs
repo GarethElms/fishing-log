@@ -4,6 +4,6 @@
 <p>Hello. To use Fisherman's Log you need to login :</p>
 {{-partial("../user/login", {viewModel:{email:""} }) }}
 {{ } else { }}
-{{-partial("../fish/fishLog") }}
+{{-partial("../fish/fishLog", {fishes:viewModel.fishes}) }}
 {{ } }}
 
